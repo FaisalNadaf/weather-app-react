@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import './searchbar.css'
 import { useState } from 'react';
 
-export default function Searchbar(){
+export default function Searchbar({updateinfo}){
     let [city,setcity]=useState('');
 
     let weather_url= 'https://api.openweathermap.org/data/2.5/weather';
@@ -12,8 +12,9 @@ export default function Searchbar(){
 let getWeatherInfo=async()=>{
     let response=await fetch(`${weather_url}?q=${city}&appid=${weather_api_key}&units=metric`);
     let jsonresponce=await response.json();
-    console.log(jsonresponce);
+   
     let result={
+        city:city,
         temp: jsonresponce.main.temp,
         mintemp: jsonresponce.main.temp_min,
         maxtemp: jsonresponce.main.temp_max,
@@ -21,6 +22,7 @@ let getWeatherInfo=async()=>{
       weather:jsonresponce.weather[0].description,
     }
     console.log(result);
+    return result;
 };
 
 
@@ -30,11 +32,11 @@ let getWeatherInfo=async()=>{
             
     }
 
-    let handelOnSubmit=(event)=>{
+    let handelOnSubmit= async (event)=>{
 event.preventDefault();
 setcity(" ");
-getWeatherInfo();
-
+let info=await getWeatherInfo();
+updateinfo(info);
     }
     return(
         <>

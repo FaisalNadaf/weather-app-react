@@ -1,12 +1,16 @@
-import Searchbar from "./searchbar"
+
+import WeatherApp from "./weatherApp"
+import './App.css'
 
 
 function App() {
 
   return (
-    <>
-      <Searchbar/>
-    </>
+<div className="weapp">
+  
+<WeatherApp />
+</div>
+  
   )
 }
 

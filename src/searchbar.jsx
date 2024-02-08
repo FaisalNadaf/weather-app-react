@@ -2,9 +2,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./searchbar.css";
 import { useState } from "react";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 
 export default function Searchbar({ updateinfo }) {
   let [city, setcity] = useState("");
+  let [error, seterror] = useState(false);
 
   let weather_url = "https://api.openweathermap.org/data/2.5/weather";
   let weather_api_key = "d062267dd22b8ad25aa61d948524e59c";
@@ -14,17 +16,20 @@ export default function Searchbar({ updateinfo }) {
       `${weather_url}?q=${city}&appid=${weather_api_key}&units=metric`
     );
     let jsonresponce = await response.json();
-
-    let result = {
-      city: city,
-      temp: jsonresponce.main.temp,
-      mintemp: jsonresponce.main.temp_min,
-      maxtemp: jsonresponce.main.temp_max,
-      humidity: jsonresponce.main.feels_like,
-      weather: jsonresponce.weather[0].description,
-    };
-    console.log(result);
-    return result;
+    try {
+      let result = {
+        city: city,
+        temp: jsonresponce.main.temp,
+        mintemp: jsonresponce.main.temp_min,
+        maxtemp: jsonresponce.main.temp_max,
+        humidity: jsonresponce.main.feels_like,
+        weather: jsonresponce.weather[0].description,
+      };
+      console.log(result);
+      return result;
+    } catch (err) {
+      throw err;
+    }
   };
 
   let handelOnChangte = (event) => {
@@ -32,10 +37,14 @@ export default function Searchbar({ updateinfo }) {
   };
 
   let handelOnSubmit = async (event) => {
-    event.preventDefault();
-    setcity(" ");
-    let info = await getWeatherInfo();
-    updateinfo(info);
+    try {
+      event.preventDefault();
+      setcity(" ");
+      let info = await getWeatherInfo();
+      updateinfo(info);
+    } catch (err) {
+      seterror(true);
+    }
   };
   return (
     <>
@@ -54,6 +63,12 @@ export default function Searchbar({ updateinfo }) {
           <Button className="search-btn" variant="contained" type="submit">
             search
           </Button>
+          {error && (
+            <p style={{ color: "red" }}>
+              <FmdBadIcon />
+              that palce not exsist in our app
+            </p>
+          )}
         </form>
       </div>
     </>

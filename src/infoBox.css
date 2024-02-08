@@ -1,4 +1,16 @@
-.cardinfo{
-    text-align: center;
+.cardinfo {
+  text-align: center;
 }
 
+.main-card {
+  display: flex;
+  justify-content: center;
+}
+
+.cardd {
+  width: 100%;
+}
+
+.tenpIcon {
+  margin: 0px 1rem;
+}

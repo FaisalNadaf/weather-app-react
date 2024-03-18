@@ -17,7 +17,7 @@ export default function Searchbar({ updateinfo }) {
     );
     let jsonresponce = await response.json();
     try {
-      let result = {
+      let result = { 
         city: city,
         temp: jsonresponce.main.temp,
         mintemp: jsonresponce.main.temp_min,
